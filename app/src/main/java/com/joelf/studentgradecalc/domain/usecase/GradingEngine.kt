@@ -39,6 +39,7 @@ class GradingEngine(
     ): List<StudentInputRow> {
         val byKey = linkedMapOf<String, StudentInputRow>()
 
+        // I keep the newest row because teachers often correct marks at the bottom.
         rows.forEach { row ->
             val key = dedupeKey(row)
             if (key == null) {
@@ -170,14 +171,21 @@ class GradingEngine(
             if (NumericParser.inRange(ca, 0.0, config.caMaxRaw) &&
                 NumericParser.inRange(exam, 0.0, config.examMaxRaw)
             ) {
-                return ScoreDecision(score = ca + exam, source = "CA+Exam (raw)", usedFallback = false)
+                val rawScore = ca + exam
+                if (isScoreValid(rawScore)) {
+                    return ScoreDecision(score = rawScore, source = "CA+Exam (raw)", usedFallback = false)
+                }
+                reasons += "CA/Exam raw score is outside 0..100"
             }
 
             if (NumericParser.inRange(ca, 0.0, config.maxPercent) &&
                 NumericParser.inRange(exam, 0.0, config.maxPercent)
             ) {
                 val weighted = (ca * config.caWeight) + (exam * config.examWeight)
-                return ScoreDecision(score = weighted, source = "CA+Exam (weighted)", usedFallback = false)
+                if (isScoreValid(weighted)) {
+                    return ScoreDecision(score = weighted, source = "CA+Exam (weighted)", usedFallback = false)
+                }
+                reasons += "Weighted CA/Exam score is outside 0..100"
             }
 
             reasons += "CA/Exam values are out of accepted ranges"
@@ -187,7 +195,7 @@ class GradingEngine(
 
         if (row.totalPresent && row.total != null) {
             val total = row.total
-            if (NumericParser.inRange(total, 0.0, config.maxPercent)) {
+            if (isScoreValid(total)) {
                 return ScoreDecision(score = total, source = "Total (fallback)", usedFallback = true)
             }
             reasons += "Total is out of 0..100 range"
@@ -244,6 +252,8 @@ class GradingEngine(
         val source: String,
         val usedFallback: Boolean,
     )
+
+    private fun isScoreValid(value: Double): Boolean = NumericParser.inRange(value, 0.0, config.maxPercent)
 
     private fun Double.round2(): Double = round(this * 100) / 100
 }
