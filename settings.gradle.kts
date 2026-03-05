@@ -18,3 +18,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "student-gradecalc-kotlin"
 include(":app")
+include(":console")

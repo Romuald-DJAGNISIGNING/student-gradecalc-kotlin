@@ -35,6 +35,12 @@ Native Android (Jetpack Compose) Student Grade Calculator with local CSV/XLSX pr
 ./gradlew assembleDebug
 ```
 
+## Run Console Mode
+
+```bash
+./gradlew :console:run --args="--input samples/parity/input_students.csv --output build/exports/grades.xlsx"
+```
+
 ## Sample Data
 
 See [`samples/parity`](samples/parity) and [`samples/edge_cases.csv`](samples/edge_cases.csv).
