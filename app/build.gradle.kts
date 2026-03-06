@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.joelf.studentgradecalc"
+    namespace = "com.romualdsigning.studentgradecalc"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.joelf.studentgradecalc"
+        applicationId = "com.romualdsigning.studentgradecalc"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -80,4 +80,5 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.4.2")
 }
+
 

@@ -8,7 +8,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.joelf.studentgradecalc.console.GradeCalcCliKt")
+    mainClass.set("com.romualdsigning.studentgradecalc.console.GradeCalcCliKt")
 }
 
 dependencies {
@@ -19,3 +19,4 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
